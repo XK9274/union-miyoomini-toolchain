@@ -5,6 +5,10 @@ ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get -y update && apt-get -y install \
+	pkg-config \
+	autoconf \
+ 	automake \
+  	m4 \
 	bc \
 	build-essential \
 	bzip2 \
