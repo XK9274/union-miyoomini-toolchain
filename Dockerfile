@@ -27,6 +27,20 @@ RUN apt-get -y update && apt-get -y install \
 	zip \
   && rm -rf /var/lib/apt/lists/*
 
+RUN cd /tmp && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.16.9/cmake-3.16.9-Linux-x86_64.tar.gz && \
+    tar xzf cmake-3.16.9-Linux-x86_64.tar.gz && \
+    cd cmake-3.16.9-Linux-x86_64 && \
+    cp -r bin/* /usr/local/bin/ && \
+    cp -r share/* /usr/local/share/ && \
+    rm -rf /usr/local/man && \
+    mkdir -p /usr/local/man && \
+    cp -r man/* /usr/local/man/ && \
+    cd /tmp && \
+    rm -rf cmake-3.16.9-Linux-x86_64* && \
+    ln -sf /usr/local/bin/cmake /usr/bin/cmake && \
+    cmake --version
+    
 RUN mkdir -p /root/workspace
 WORKDIR /root
 
