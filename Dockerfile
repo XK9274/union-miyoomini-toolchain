@@ -4,6 +4,16 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# bullseye is EOL and deb.debian.org's Release files eventually expire; pin
+# a snapshot date and skip Valid-Until, since the snapshot's own signature
+# also carries a short expiry.
+RUN printf '%s\n' \
+	'deb http://snapshot.debian.org/archive/debian/20260824T000000Z bullseye main' \
+	'deb http://snapshot.debian.org/archive/debian-security/20260824T000000Z bullseye-security main' \
+	'deb http://snapshot.debian.org/archive/debian/20260824T000000Z bullseye-updates main' \
+	> /etc/apt/sources.list && \
+	echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+
 RUN apt-get -y update && apt-get -y install \
 	pkg-config \
 	autoconf \
